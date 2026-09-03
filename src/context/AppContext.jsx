@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AppContext = createContext();
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://hirehub-project-kqy7.onrender.com/api';
 
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(null);
