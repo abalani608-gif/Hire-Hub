@@ -21,7 +21,8 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   const login = (email, password) => {
-    const foundUser = mockUsers.find(u => u.email === email);
+    const usersArray = Object.values(mockUsers);
+    const foundUser = usersArray.find(u => u.email === email);
     if (foundUser) {
       setUser(foundUser);
       localStorage.setItem('user', JSON.stringify(foundUser));
