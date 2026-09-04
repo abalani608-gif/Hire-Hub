@@ -19,7 +19,7 @@ const Navbar = () => {
       <div className={`container ${styles.container}`}>
         <Link to="/" className={styles.logo}>
           <Briefcase size={24} />
-          HireHub
+          Vercado
         </Link>
 
         <div className={styles.navLinks}>

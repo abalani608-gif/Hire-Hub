@@ -38,7 +38,7 @@ const Register = () => {
       <div className={styles.card}>
         <div className={styles.header}>
           <h1 className={styles.title}>Create an account</h1>
-          <p className={styles.subtitle}>Join HireHub to find jobs or hire talent.</p>
+          <p className={styles.subtitle}>Join Vercado to find jobs or hire talent.</p>
         </div>
         
         <div className={styles.roleSelect}>

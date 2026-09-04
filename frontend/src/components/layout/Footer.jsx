@@ -11,7 +11,7 @@ const Footer = () => {
           <div className={styles.brand}>
             <Link to="/" className={styles.logo}>
               <Briefcase size={24} />
-              HireHub
+              Vercado
             </Link>
             <p className={styles.description}>
               Connecting top talent with the best companies. Find your dream job or internship today.
@@ -38,7 +38,7 @@ const Footer = () => {
           </div>
           
           <div className={styles.column}>
-            <h4>HireHub</h4>
+            <h4>Vercado</h4>
             <div className={styles.links}>
               <Link to="/about" className={styles.link}>About Us</Link>
               <Link to="/contact" className={styles.link}>Contact</Link>
@@ -49,7 +49,7 @@ const Footer = () => {
         </div>
         
         <div className={styles.bottom}>
-          <p>&copy; {new Date().getFullYear()} HireHub. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Vercado. All rights reserved.</p>
           <div className={styles.social}>
             <a href="#" className={styles.link}><Globe size={20} /></a>
             <a href="#" className={styles.link}><Mail size={20} /></a>

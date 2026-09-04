@@ -97,7 +97,7 @@ const seedDB = async () => {
       email: 'admin@recruiter.com',
       password: hash,
       role: 'recruiter',
-      company: 'HireHub Inc'
+      company: 'Vercado Inc'
     });
     console.log("Created demo recruiter account: admin@recruiter.com / password123");
 
