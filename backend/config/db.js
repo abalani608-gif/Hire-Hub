@@ -1,7 +1,7 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
-// Add HireHub DB name to the connection string
-const MONGO_URI = "mongodb+srv://abalani608_db_user:F8BnQPZKoeOsL4Xm@cluster0.s3ubst1.mongodb.net/hirehub?retryWrites=true&w=majority";
+const MONGO_URI = process.env.MONGO_URI;
 
 const connectDB = async () => {
   try {

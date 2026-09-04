@@ -25,7 +25,7 @@ router.post('/register', async (req, res) => {
     await user.save();
 
     const payload = { user: { id: user.id, role: user.role } };
-    jwt.sign(payload, 'hirehub_secret_key', { expiresIn: '5d' }, (err, token) => {
+    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '5d' }, (err, token) => {
       if (err) throw err;
       res.json({ token, user: { id: user.id, name, email, role, company } });
     });
@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
     const payload = { user: { id: user.id, role: user.role } };
-    jwt.sign(payload, 'hirehub_secret_key', { expiresIn: '5d' }, (err, token) => {
+    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '5d' }, (err, token) => {
       if (err) throw err;
       res.json({ 
         token, 
