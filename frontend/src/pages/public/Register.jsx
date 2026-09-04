@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Auth.module.css';
 import Button from '../../components/common/Button';
-import { useAppContext } from '../../context/AppContext';
+import { AppContext } from '../../context/AppContext';
+import { useContext } from 'react';
 
 const Register = () => {
   const navigate = useNavigate();
-  const { register } = useAppContext();
+  const { register } = useContext(AppContext);
   
   const [role, setRole] = useState('seeker'); // seeker or recruiter
   const [formData, setFormData] = useState({
@@ -26,9 +27,9 @@ const Register = () => {
     
     if (success) {
       if (role === 'recruiter') {
-        navigate('/recruiter');
+        navigate('/');
       } else {
-        navigate('/dashboard');
+        navigate('/');
       }
     }
   };

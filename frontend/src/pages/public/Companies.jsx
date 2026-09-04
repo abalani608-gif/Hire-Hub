@@ -28,7 +28,7 @@ const Companies = () => {
         />
       </div>
       
-      <div className={styles.grid}>
+      <div className={styles.companyGrid}>
         {filteredCompanies.map(company => (
           <div key={company.id} className={styles.card}>
             <img src={company.logo} alt={company.name} className={styles.logo} />

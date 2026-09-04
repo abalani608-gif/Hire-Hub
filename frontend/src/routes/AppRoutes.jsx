@@ -1,4 +1,18 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AppContext } from '../context/AppContext';
+import Login from '../pages/public/Login';
+import Register from '../pages/public/Register';
+
+const ProtectedRoute = ({ children }) => {
+  const { user } = useContext(AppContext);
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
+
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import Home from '../pages/public/Home';
@@ -12,7 +26,9 @@ import CompanyDetails from '../pages/public/CompanyDetails';
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<MainLayout />}>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/" element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
         <Route index element={<Home />} />
         <Route path="jobs" element={<Jobs />} />
         <Route path="internships" element={<Internships />} />

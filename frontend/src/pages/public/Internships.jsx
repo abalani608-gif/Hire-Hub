@@ -30,7 +30,7 @@ const Internships = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.sidebar}>
+      <div className={styles.sidebar} style={{display:'none'}}>
         <h3>Filters</h3>
         <input type="text" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} className={styles.input} />
         
@@ -65,8 +65,8 @@ const Internships = () => {
               <p className={styles.company}>{internship.company}</p>
               <p>{internship.location} • {internship.duration} • {internship.workMode}</p>
               {internship.fresherFriendly && <span className={styles.badge}>Fresher Friendly</span>}
-              <p className={styles.date}>{formatDate(internship.postedDate)}</p>
-              <Link to={`/internships/${internship.id}`} className={styles.link}>View Details</Link>
+              
+              
             </div>
           ))}
         </div>

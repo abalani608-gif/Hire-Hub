@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Auth.module.css';
 import Button from '../../components/common/Button';
-import { useAppContext } from '../../context/AppContext';
+import { AppContext } from '../../context/AppContext';
+import { useContext } from 'react';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAppContext();
+  const { login } = useContext(AppContext);
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,9 +21,9 @@ const Login = () => {
     
     if (success) {
       if (role === 'recruiter') {
-        navigate('/recruiter');
+        navigate('/');
       } else {
-        navigate('/dashboard');
+        navigate('/');
       }
     }
   };
@@ -83,7 +84,7 @@ const Login = () => {
             // Google Login is just a Demo Login for the portfolio
             alert("Google OAuth is not configured. Logging you in with a Demo Account (aditya@example.com) instead.");
             const success = await login("aditya@example.com", "password123", "seeker");
-            if (success) navigate('/dashboard');
+            if (success) navigate('/');
           }}
         >
           Continue with Google (Demo)
