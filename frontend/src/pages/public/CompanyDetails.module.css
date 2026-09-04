@@ -1,0 +1,70 @@
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.header {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.industry {
+  font-weight: bold;
+  color: #555;
+  margin: 0.5rem 0;
+}
+
+.website {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.section {
+  margin-bottom: 3rem;
+}
+
+.list {
+  margin-top: 1.5rem;
+}
+
+.card {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background: white;
+}
+
+.card h5 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #0d6efd;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+}

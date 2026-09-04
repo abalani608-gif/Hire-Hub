@@ -1,75 +1,68 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Search, MapPin } from 'lucide-react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { AppContext } from '../../context/AppContext';
 import styles from './Home.module.css';
-import Button from '../../components/common/Button';
-import JobCard from '../../components/specific/JobCard';
-import { useAppContext } from '../../context/AppContext';
 
 const Home = () => {
-  const { jobs } = useAppContext();
-  const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [location, setLocation] = useState('');
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    navigate(`/jobs?search=${encodeURIComponent(searchTerm)}&location=${encodeURIComponent(location)}`);
-  };
-
-  const featuredJobs = jobs.slice(0, 6); // First 6 jobs as featured
+  const { jobs, internships, companies } = useContext(AppContext);
+  const featuredJobs = jobs.slice(0, 3);
+  const featuredInternships = internships.slice(0, 3);
+  const topCompanies = companies.slice(0, 3);
 
   return (
-    <div className="animate-fade-in">
-      {/* Hero Section */}
+    <div className={styles.home}>
       <section className={styles.hero}>
-        <div className={`container ${styles.heroContent}`}>
-          <h1 className={styles.title}>
-            Find the Right Job. <br /><span>Build Your Future.</span>
-          </h1>
-          <p className={styles.subtitle}>
-            Explore thousands of job opportunities and internships from top companies.
-          </p>
+        <h1>Find Your Dream Job</h1>
+        <p>Explore thousands of opportunities with Vercado.</p>
+        <Link to="/jobs" className={styles.btn}>Browse Jobs</Link>
+      </section>
 
-          <form className={styles.searchBox} onSubmit={handleSearch}>
-            <div className={styles.inputGroup}>
-              <Search size={20} className="text-muted" />
-              <input 
-                type="text" 
-                placeholder="Job title, skills, or company" 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+      <section className={styles.section}>
+        <h2>Featured Jobs</h2>
+        <div className={styles.grid}>
+          {featuredJobs.map(job => (
+            <div key={job.id} className={styles.card}>
+              <h3>{job.title}</h3>
+              <p>{job.company}</p>
+              <Link to={`/jobs/${job.id}`}>View Details</Link>
             </div>
-            <div className={styles.inputGroup}>
-              <MapPin size={20} className="text-muted" />
-              <input 
-                type="text" 
-                placeholder="City, state, or 'Remote'" 
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
-            </div>
-            <Button type="submit" size="lg">Search</Button>
-          </form>
+          ))}
         </div>
       </section>
 
-      {/* Featured Jobs Section */}
       <section className={styles.section}>
-        <div className="container">
-          <h2 className={styles.sectionTitle}>Featured Jobs</h2>
-          <div className={styles.jobGrid}>
-            {featuredJobs.map(job => (
-              <JobCard key={job.id} job={job} />
-            ))}
-          </div>
-          <div className={styles.viewAll}>
-            <Button variant="outline" size="lg" onClick={() => navigate('/jobs')}>
-              View All Jobs
-            </Button>
-          </div>
+        <h2>Featured Internships</h2>
+        <div className={styles.grid}>
+          {featuredInternships.map(internship => (
+            <div key={internship.id} className={styles.card}>
+              <h3>{internship.title}</h3>
+              <p>{internship.company}</p>
+              <Link to={`/internships/${internship.id}`}>View Details</Link>
+            </div>
+          ))}
         </div>
+      </section>
+
+      <section className={styles.section}>
+        <h2>Top Companies</h2>
+        <div className={styles.grid}>
+          {topCompanies.map(company => (
+            <div key={company.id} className={styles.card}>
+              <h3>{company.name}</h3>
+              <Link to={`/companies/${company.id}`}>View Profile</Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <h2>Why Choose Vercado</h2>
+        <p>We connect the best talent with the best companies.</p>
+      </section>
+
+      <section className={styles.section}>
+        <h2>How It Works</h2>
+        <p>1. Create Profile &rarr; 2. Find Jobs &rarr; 3. Apply</p>
       </section>
     </div>
   );

@@ -1,143 +1,75 @@
-import React, { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Search, Filter } from 'lucide-react';
+import React, { useContext, useState, useMemo } from 'react';
+import { AppContext } from '../../context/AppContext';
+import { Link } from 'react-router-dom';
 import styles from './Jobs.module.css';
-import JobCard from '../../components/specific/JobCard';
-import Button from '../../components/common/Button';
-import { useAppContext } from '../../context/AppContext';
+import { formatDate } from '../../utils/dateFormatter';
 
 const Jobs = () => {
-  const { jobs } = useAppContext();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const initialSearch = searchParams.get('search') || '';
-  
-  const [searchTerm, setSearchTerm] = useState(initialSearch);
-  const [activeFilters, setActiveFilters] = useState({
-    type: [],
-    workMode: []
-  });
+  const { jobs } = useContext(AppContext);
+  const [search, setSearch] = useState('');
+  const [jobType, setJobType] = useState('');
+  const [workMode, setWorkMode] = useState('');
+  const [sort, setSort] = useState('newest');
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchTerm) {
-      setSearchParams({ search: searchTerm });
-    } else {
-      setSearchParams({});
+  const filteredJobs = useMemo(() => {
+    let result = jobs;
+    if (search) {
+      result = result.filter(j => j.title.toLowerCase().includes(search.toLowerCase()) || j.company.toLowerCase().includes(search.toLowerCase()));
     }
-  };
-
-  const toggleFilter = (category, value) => {
-    setActiveFilters(prev => {
-      const current = prev[category];
-      const updated = current.includes(value)
-        ? current.filter(item => item !== value)
-        : [...current, value];
-      return { ...prev, [category]: updated };
-    });
-  };
-
-  // Filter jobs based on search term and active filters
-  const filteredJobs = jobs.filter(job => {
-    // Search matching
-    const matchesSearch = searchTerm === '' || 
-      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.skills.some(s => s.toLowerCase().includes(searchTerm.toLowerCase()));
-      
-    // Type matching
-    const matchesType = activeFilters.type.length === 0 || 
-      activeFilters.type.includes(job.jobType);
-      
-    // Work mode matching
-    const matchesMode = activeFilters.workMode.length === 0 || 
-      activeFilters.workMode.includes(job.workMode);
-
-    return matchesSearch && matchesType && matchesMode;
-  });
+    if (jobType) {
+      result = result.filter(j => j.type === jobType);
+    }
+    if (workMode) {
+      result = result.filter(j => j.workMode === workMode);
+    }
+    if (sort === 'newest') {
+      result = [...result].sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate));
+    }
+    return result;
+  }, [jobs, search, jobType, workMode, sort]);
 
   return (
-    <div className="container animate-fade-in">
-      <div className={styles.page}>
+    <div className={styles.container}>
+      <div className={styles.sidebar}>
+        <h3>Filters</h3>
+        <input type="text" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} className={styles.input} />
         
-        {/* Sidebar Filters */}
-        <aside className={styles.sidebar}>
-          <div className={styles.filterGroup}>
-            <h3 className={styles.filterTitle}>Job Type</h3>
-            <div className={styles.checkboxList}>
-              {['Full-time', 'Part-time', 'Contract', 'Internship'].map(type => (
-                <label key={type} className={styles.checkboxLabel}>
-                  <input 
-                    type="checkbox" 
-                    checked={activeFilters.type.includes(type)}
-                    onChange={() => toggleFilter('type', type)}
-                  />
-                  {type}
-                </label>
-              ))}
+        <label>Job Type</label>
+        <select value={jobType} onChange={e => setJobType(e.target.value)} className={styles.select}>
+          <option value="">All</option>
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
+          <option value="Contract">Contract</option>
+        </select>
+
+        <label>Work Mode</label>
+        <select value={workMode} onChange={e => setWorkMode(e.target.value)} className={styles.select}>
+          <option value="">All</option>
+          <option value="Remote">Remote</option>
+          <option value="On-site">On-site</option>
+          <option value="Hybrid">Hybrid</option>
+        </select>
+
+        <label>Sort</label>
+        <select value={sort} onChange={e => setSort(e.target.value)} className={styles.select}>
+          <option value="newest">Newest</option>
+          <option value="salary">Salary (mock)</option>
+        </select>
+      </div>
+      
+      <div className={styles.content}>
+        <h2>Jobs ({filteredJobs.length})</h2>
+        <div className={styles.grid}>
+          {filteredJobs.map(job => (
+            <div key={job.id} className={styles.card}>
+              <h3>{job.title}</h3>
+              <p className={styles.company}>{job.company}</p>
+              <p>{job.location} • {job.type} • {job.workMode}</p>
+              <p className={styles.date}>{formatDate(job.postedDate)}</p>
+              <Link to={`/jobs/${job.id}`} className={styles.link}>View Details</Link>
             </div>
-          </div>
-
-          <div className={styles.filterGroup}>
-            <h3 className={styles.filterTitle}>Work Mode</h3>
-            <div className={styles.checkboxList}>
-              {['Remote', 'Hybrid', 'On-site'].map(mode => (
-                <label key={mode} className={styles.checkboxLabel}>
-                  <input 
-                    type="checkbox" 
-                    checked={activeFilters.workMode.includes(mode)}
-                    onChange={() => toggleFilter('workMode', mode)}
-                  />
-                  {mode}
-                </label>
-              ))}
-            </div>
-          </div>
-        </aside>
-
-        {/* Main Content */}
-        <main className={styles.main}>
-          <Button variant="outline" className={styles.mobileFilterBtn} icon={<Filter size={16} />}>
-            Show Filters
-          </Button>
-
-          <div className={styles.searchHeader}>
-            <form className={styles.searchBox} onSubmit={handleSearch}>
-              <input 
-                type="text" 
-                className={styles.searchInput} 
-                placeholder="Search by job title, skill, or company..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <button type="submit" className={styles.searchBtn}>
-                <Search size={18} />
-              </button>
-            </form>
-          </div>
-
-          <div className={styles.resultsHeader}>
-            <span>Showing {filteredJobs.length} jobs</span>
-            <div>
-              <select className={styles.sortSelect} defaultValue="newest">
-                <option value="newest">Newest First</option>
-                <option value="relevant">Most Relevant</option>
-              </select>
-            </div>
-          </div>
-
-          <div className={styles.jobList}>
-            {filteredJobs.length > 0 ? (
-              filteredJobs.map(job => (
-                <JobCard key={job.id} job={job} />
-              ))
-            ) : (
-              <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-muted)' }}>
-                <h3>No jobs found matching your criteria.</h3>
-                <p>Try adjusting your search or filters.</p>
-              </div>
-            )}
-          </div>
-        </main>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -4,12 +4,12 @@ import { AppContext } from '../../context/AppContext';
 import { formatDate } from '../../utils/dateFormatter';
 import styles from './Details.module.css';
 
-const JobDetails = () => {
+const InternshipDetails = () => {
   const { id } = useParams();
-  const { jobs, savedJobs, saveJob, appliedJobs, applyJob } = useContext(AppContext);
-  const job = jobs.find(j => j.id === id);
+  const { internships, savedJobs, saveJob, appliedJobs, applyJob } = useContext(AppContext);
+  const internship = internships.find(i => i.id === id);
 
-  if (!job) return <div className={styles.container}>Job not found</div>;
+  if (!internship) return <div className={styles.container}>Internship not found</div>;
 
   const isSaved = savedJobs.includes(id);
   const isApplied = appliedJobs.includes(id);
@@ -17,10 +17,11 @@ const JobDetails = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2>{job.title}</h2>
-        <Link to={`/companies/${job.companyId}`} className={styles.companyLink}>{job.company}</Link>
-        <p className={styles.meta}>{job.location} • {job.type} • {job.workMode}</p>
-        <p className={styles.date}>{formatDate(job.postedDate)}</p>
+        <h2>{internship.title}</h2>
+        <Link to={`/companies/${internship.companyId}`} className={styles.companyLink}>{internship.company}</Link>
+        <p className={styles.meta}>{internship.location} • {internship.duration} • {internship.workMode}</p>
+        <p className={styles.date}>{formatDate(internship.postedDate)}</p>
+        {internship.fresherFriendly && <span className={styles.badge}>Fresher Friendly</span>}
       </div>
 
       <div className={styles.actions}>
@@ -35,33 +36,28 @@ const JobDetails = () => {
           onClick={() => saveJob(id)} 
           className={`${styles.btnOutline} ${isSaved ? styles.saved : ''}`}
         >
-          {isSaved ? 'Saved' : 'Save Job'}
+          {isSaved ? 'Saved' : 'Save'}
         </button>
       </div>
 
       <div className={styles.section}>
-        <h3>Salary</h3>
-        <p>{job.salary}</p>
-      </div>
-
-      <div className={styles.section}>
-        <h3>Experience</h3>
-        <p>{job.experience}</p>
+        <h3>Stipend</h3>
+        <p>{internship.stipend}</p>
       </div>
 
       <div className={styles.section}>
         <h3>Skills Required</h3>
         <div className={styles.skills}>
-          {job.skills.map(s => <span key={s} className={styles.skill}>{s}</span>)}
+          {internship.skills.map(s => <span key={s} className={styles.skill}>{s}</span>)}
         </div>
       </div>
 
       <div className={styles.section}>
         <h3>Description</h3>
-        <p>{job.description}</p>
+        <p>{internship.description}</p>
       </div>
     </div>
   );
 };
 
-export default JobDetails;
+export default InternshipDetails;
