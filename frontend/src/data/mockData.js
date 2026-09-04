@@ -1,5 +1,6 @@
 export const mockUsers = [
-  { id: '1', name: 'John Doe', email: 'john@example.com', role: 'seeker' }
+  { id: '1', name: 'Aditya', email: 'aditya@example.com', role: 'seeker' },
+  { id: '2', name: 'Aditya', email: 'aditya@gmail.com', role: 'seeker' }
 ];
 
 export const companies = [
