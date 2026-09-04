@@ -14,7 +14,12 @@ const Footer = () => {
           <Link to="/internships">Internships</Link>
           <Link to="/companies">Companies</Link>
         </div>
-        <p className={styles.copyright}>Designed & Developed by Antigravity</p>
+        
+        <div style={{ marginTop: '1rem', color: '#888' }}>
+          Contact us: <a href="mailto:abalani608@gmail.com" style={{ color: '#0d6efd', textDecoration: 'none' }}>abalani608@gmail.com</a>
+        </div>
+        <p className={styles.copyright}>Designed & Developed by Aditya Balani</p>
+  
       </div>
     </footer>
   );
